@@ -16,7 +16,9 @@ MAKE_ARTIFACT_RUNTIME = '3:00:00'
 MAKE_ARTIFACT_SLEEP = 10
 
 LOCATIONS = [
-    # TODO - project locations here
+    'Kenya',
+    'Nigeria',
+    'Burkina Faso'
 ]
 
 
@@ -33,6 +35,7 @@ class __Population(NamedTuple):
     DEMOGRAPHY: str = 'population.demographic_dimensions'
     TMRLE: str = 'population.theoretical_minimum_risk_life_expectancy'
     ACMR: str = 'cause.all_causes.cause_specific_mortality_rate'
+    COV_LBBS_ESTIMATE: str = 'covariate.live_births_by_sex.estimate'
 
     @property
     def name(self):
@@ -46,35 +49,97 @@ class __Population(NamedTuple):
 POPULATION = __Population()
 
 
-# TODO - sample key group used to idneitfy keys in model
+# TODO - sample key group used to identify keys in model
 # For more information see the tutorial:
 # https://vivarium-inputs.readthedocs.io/en/latest/tutorials/pulling_data.html#entity-measure-data
-class __IHD(NamedTuple):
-    ACUTE_MI_PREVALENCE: str = 'sequela.acute_myocardial_infarction.prevalence'
-    POST_MI_PREVALENCE: str = 'sequela.post_myocardial_infarction.prevalence'
-    ACUTE_MI_INCIDENCE_RATE: str = 'cause.ischemic_heart_disease.incidence_rate'
-    ACUTE_MI_DISABILITY_WEIGHT: str = 'sequela.acute_myocardial_infarction.disability_weight'
-    POST_MI_DISABILITY_WEIGHT: str = 'sequela.post_myocardial_infarction.disability_weight'
-    ACUTE_MI_EMR: str = 'sequela.acute_myocardial_infarction.excess_mortality_rate'
-    POST_MI_EMR: str = 'sequela.post_myocardial_infarction.excess_mortality_rate'
-    CSMR: str = 'cause.ischemic_heart_disease.cause_specific_mortality_rate'
-    RESTRICTIONS: str = 'cause.ischemic_heart_disease.restrictions'
+class __DIARRHEA(NamedTuple):
+    DIARRHEA_CAUSE_SPECIFIC_MORTALITY_RATE: str = 'cause.diarrheal_diseases.cause_specific_mortality_rate'
+    DIARRHEA_PREVALENCE: str = 'cause.diarrheal_diseases.prevalence'
+    DIARRHEA_INCIDENCE_RATE: str = 'cause.diarrheal_diseases.incidence_rate'
+    DIARRHEA_REMISSION_RATE: str = 'cause.diarrheal_diseases.remission_rate'
+    DIARRHEA_EXCESS_MORTALITY_RATE: str = 'cause.diarrheal_diseases.excess_mortality_rate'
+    DIARRHEA_DISABILITY_WEIGHT: str = 'cause.diarrheal_diseases.disability_weight'
+    DIARRHEA_RESTRICTIONS: str = 'cause.diarrheal_diseases.restrictions'
 
     @property
     def name(self):
-        return 'ischemic_heart_disease'
+        return 'diarrhea'
 
     @property
     def log_name(self):
-        return 'ischemic heart disease'
+        return self.name.replace('_', ' ')
 
 
-IHD = __IHD()
+class __MEASLES(NamedTuple):
+    MEASLES_CAUSE_SPECIFIC_MORTALITY_RATE: str = 'cause.measles.cause_specific_mortality_rate'
+    MEASLES_PREVALENCE: str = 'cause.measles.prevalence'
+    MEASLES_INCIDENCE_RATE: str = 'cause.measles.incidence_rate'
+    MEASLES_EXCESS_MORTALITY_RATE: str = 'cause.measles.excess_mortality_rate'
+    MEASLES_DISABILITY_WEIGHT: str = 'cause.measles.disability_weight'
+    MEASLES_RESTRICTIONS: str = 'cause.measles.restrictions'
+
+    @property
+    def name(self):
+        return 'measles'
+
+    @property
+    def log_name(self):
+        return self.name.replace('_', ' ')
+
+LRI_BIRTH_PREVALENCE_MEID = 1258
+LRI_BIRTH_PREVALENCE_DRAW_SOURCE = 'epi'
+LRI_BIRTH_PREVALENCE_AGE_ID = 164
+LRI_BIRTH_PREVALENCE_GBD_ROUND = 5
+
+class __LOWER_RESPIRATORY_INFECTIONS(NamedTuple):
+    LRI_CAUSE_SPECIFIC_MORTALITY_RATE: str = 'cause.lower_respiratory_infections.cause_specific_mortality_rate'
+    LRI_BIRTH_PREVALENCE: str = 'cause.lower_respiratory_infections.birth_prevalence'
+    LRI_PREVALENCE: str = 'cause.lower_respiratory_infections.prevalence'
+    LRI_INCIDENCE_RATE: str = 'cause.lower_respiratory_infections.incidence_rate'
+    LRI_REMISSION_RATE: str = 'cause.lower_respiratory_infections.remission_rate'
+    LRI_EXCESS_MORTALITY_RATE: str = 'cause.lower_respiratory_infections.excess_mortality_rate'
+    LRI_DISABILITY_WEIGHT: str = 'cause.lower_respiratory_infections.disability_weight'
+    LRI_RESTRICTIONS: str = 'cause.lower_respiratory_infections.restrictions'
+
+    @property
+    def name(self):
+        return 'lower_respiratory_infections'
+
+    @property
+    def log_name(self):
+        return self.name.replace('_', ' ')
+
+
+class __VITAMIN_A_DEFICIENCY(NamedTuple):
+    VITAMIN_A_DEFICIENCY_CATEGORIES: str = 'risk_factor.vitamin_a_deficiency.categories'
+    VITAMIN_A_DEFICIENCY_EXPOSURE: str = 'risk_factor.vitamin_a_deficiency.exposure'
+    VITAMIN_A_DEFICIENCY_RELATIVE_RISK: str = 'risk_factor.vitamin_a_deficiency.relative_risk'
+    VITAMIN_A_DEFICIENCY_PAF: str = 'risk_factor.vitamin_a_deficiency.population_attributable_fraction'
+    VITAMIN_A_DEFICIENCY_DISTRIBUTION: str = 'risk_factor.vitamin_a_deficiency.distribution'
+    VITAMIN_A_DEFICIENCY_RESTRICTIONS: str = 'risk_factor.vitamin_a_deficiency.restrictions'
+    VITAMIN_A_DEFICIENCY_DISABILITY_WEIGHT: str = 'cause.vitamin_a_deficiency.disability_weight'
+
+    @property
+    def name(self):
+        return 'vitamin_a_deficiency'
+
+    @property
+    def log_name(self):
+        return self.name.replace('_', ' ')
+
+
+DIARRHEA = __DIARRHEA()
+MEASLES = __MEASLES()
+LOWER_RESPIRATORY_INFECTIONS = __LOWER_RESPIRATORY_INFECTIONS()
+VITAMIN_A_DEFICIENCY = __VITAMIN_A_DEFICIENCY()
 
 
 MAKE_ARTIFACT_KEY_GROUPS = [
     POPULATION,
-    IHD,
+    DIARRHEA,
+    MEASLES,
+    LOWER_RESPIRATORY_INFECTIONS,
+    VITAMIN_A_DEFICIENCY
 ]
 
 
@@ -93,32 +158,52 @@ class TransitionString(str):
 
 
 # TODO input details of model states and transitions
-SOME_MODEL_NAME = 'some_model'
-SUSCEPTIBLE_STATE_NAME = f'susceptible_to_{SOME_MODEL_NAME}'
-FIRST_STATE_NAME = 'first_state'
-SECOND_STATE_NAME = 'second_state'
-IHD_MODEL_STATES = (SUSCEPTIBLE_STATE_NAME, FIRST_STATE_NAME, SECOND_STATE_NAME)
-IHD_MODEL_TRANSITIONS = (
-    TransitionString(f'{SUSCEPTIBLE_STATE_NAME}_TO_{FIRST_STATE_NAME}'),
-    TransitionString(f'{FIRST_STATE_NAME}_TO_{SECOND_STATE_NAME}'),
-    TransitionString(f'{SECOND_STATE_NAME}_TO_{FIRST_STATE_NAME}')
+DIARRHEA_MODEL_NAME = 'diarrheal_diseases'
+DIARRHEA_SUSCEPTIBLE_STATE_NAME = f'susceptible_to_{DIARRHEA_MODEL_NAME}'
+DIARRHEA_WITH_CONDITION_STATE_NAME = DIARRHEA_MODEL_NAME
+DIARRHEA_MODEL_STATES = (DIARRHEA_SUSCEPTIBLE_STATE_NAME, DIARRHEA_WITH_CONDITION_STATE_NAME)
+DIARRHEA_MODEL_TRANSITIONS = (
+    TransitionString(f'{DIARRHEA_SUSCEPTIBLE_STATE_NAME}_TO_{DIARRHEA_WITH_CONDITION_STATE_NAME}'),
+    TransitionString(f'{DIARRHEA_WITH_CONDITION_STATE_NAME}_TO_{DIARRHEA_SUSCEPTIBLE_STATE_NAME}'),
 )
+
+MEASLES_MODEL_NAME = 'measles'
+MEASLES_SUSCEPTIBLE_STATE_NAME = f'susceptible_to_{MEASLES_MODEL_NAME}'
+MEASLES_WITH_CONDITION_STATE_NAME = MEASLES_MODEL_NAME
+MEASLES_MODEL_STATES = (MEASLES_SUSCEPTIBLE_STATE_NAME, MEASLES_WITH_CONDITION_STATE_NAME)
+MEASLES_MODEL_TRANSITIONS = (
+    TransitionString(f'{MEASLES_SUSCEPTIBLE_STATE_NAME}_TO_{MEASLES_WITH_CONDITION_STATE_NAME}'),
+    TransitionString(f'{MEASLES_WITH_CONDITION_STATE_NAME}_TO_{MEASLES_SUSCEPTIBLE_STATE_NAME}'),
+)
+
+LRI_MODEL_NAME = 'lower_respiratory_infections'
+LRI_SUSCEPTIBLE_STATE_NAME = f'susceptible_to_{LRI_MODEL_NAME}'
+LRI_WITH_CONDITION_STATE_NAME = LRI_MODEL_NAME
+LRI_MODEL_STATES = (LRI_SUSCEPTIBLE_STATE_NAME, LRI_WITH_CONDITION_STATE_NAME)
+LRI_MODEL_TRANSITIONS = (
+    TransitionString(f'{LRI_SUSCEPTIBLE_STATE_NAME}_TO_{LRI_WITH_CONDITION_STATE_NAME}'),
+    TransitionString(f'{LRI_WITH_CONDITION_STATE_NAME}_TO_{LRI_SUSCEPTIBLE_STATE_NAME}',)
+)
+
+VITAMIN_A_MODEL_NAME = 'vitamin_a_deficiency'
+VITAMIN_A_WITH_CONDITION_STATE_NAME = VITAMIN_A_MODEL_NAME
+VITAMIN_A_SUSCEPTIBLE_STATE_NAME = f'susceptible_to_{VITAMIN_A_MODEL_NAME}'
+VITAMIN_A_MODEL_STATES = (VITAMIN_A_SUSCEPTIBLE_STATE_NAME, VITAMIN_A_WITH_CONDITION_STATE_NAME)
+VITAMIN_A_MODEL_TRANSITIONS = (
+    TransitionString(f'{VITAMIN_A_SUSCEPTIBLE_STATE_NAME}_TO_{VITAMIN_A_WITH_CONDITION_STATE_NAME}'),
+    TransitionString(f'{VITAMIN_A_WITH_CONDITION_STATE_NAME}_TO_{VITAMIN_A_SUSCEPTIBLE_STATE_NAME}')
+)
+VITAMIN_A_BAD_EVENT_COUNT = f'{VITAMIN_A_MODEL_NAME}_event_count'
+VITAMIN_A_BAD_EVENT_TIME = f'{VITAMIN_A_MODEL_NAME}_event_time'
+VITAMIN_A_GOOD_EVENT_COUNT = f'{VITAMIN_A_SUSCEPTIBLE_STATE_NAME}_event_count'
+VITAMIN_A_GOOD_EVENT_TIME = f'{VITAMIN_A_SUSCEPTIBLE_STATE_NAME}_event_time'
+VITAMIN_A_PROPENSITY = f'{VITAMIN_A_MODEL_NAME}_propensity'
+VITAMIN_A_RISK_CATEGORIES = ['cat1', 'cat2']
 
 
 ########################
 # Risk Model Constants #
 ########################
-# TODO - remove if you don't need lbwsg
-LBWSG_MODEL_NAME = 'low_birth_weight_and_short_gestation'
-
-
-class __LBWSG_MISSING_CATEGORY(NamedTuple):
-    CAT: str = 'cat212'
-    NAME: str = 'Birth prevalence - [37, 38) wks, [1000, 1500) g'
-    EXPOSURE: float = 0.
-
-
-LBWSG_MISSING_CATEGORY = __LBWSG_MISSING_CATEGORY()
 
 
 #################################
@@ -164,15 +249,41 @@ SEXES = ('male', 'female')
 YEARS = ()
 # TODO - add literals for ages in the model
 AGE_GROUPS = ()
-# TODO - add causes of death
+
 CAUSES_OF_DEATH = (
     'other_causes',
     DIARRHEA_WITH_CONDITION_STATE_NAME,
+    MEASLES_WITH_CONDITION_STATE_NAME,
+    LRI_WITH_CONDITION_STATE_NAME
 )
-# TODO - add causes of disability
+
 CAUSES_OF_DISABILITY = (
     DIARRHEA_WITH_CONDITION_STATE_NAME,
+    MEASLES_WITH_CONDITION_STATE_NAME,
+    LRI_WITH_CONDITION_STATE_NAME
 )
+
+
+DISEASE_MODELS = (DIARRHEA_MODEL_NAME, MEASLES_MODEL_NAME, LRI_MODEL_NAME, VITAMIN_A_MODEL_NAME)
+DISEASE_MODEL_MAP = {
+    DIARRHEA_MODEL_NAME: {
+        'states': DIARRHEA_MODEL_STATES,
+        'transitions': DIARRHEA_MODEL_TRANSITIONS,
+    },
+    MEASLES_MODEL_NAME: {
+        'states': MEASLES_MODEL_STATES,
+        'transitions': MEASLES_MODEL_TRANSITIONS,
+    },
+    LRI_MODEL_NAME: {
+        'states': LRI_MODEL_STATES,
+        'transitions': LRI_MODEL_TRANSITIONS,
+    },
+    VITAMIN_A_MODEL_NAME: {
+        'states': VITAMIN_A_MODEL_STATES,
+        'transitions': VITAMIN_A_MODEL_TRANSITIONS,
+    }
+}
+
 STATES = (state for model in DISEASE_MODELS for state in DISEASE_MODEL_MAP[model]['states'])
 TRANSITIONS = (transition for model in DISEASE_MODELS for transition in DISEASE_MODEL_MAP[model]['transitions'])
 
