@@ -8,21 +8,23 @@ components:
             - SIR_fixed_duration("measles", "10")
             - SIS("diarrheal_diseases")
         risks:
-            - Risk("risk_factor.vitamin_a_deficiency")
+            #- Risk("risk_factor.vitamin_a_deficiency")
             - RiskEffect("risk_factor.vitamin_a_deficiency", "cause.measles.incidence_rate")
             - RiskEffect("risk_factor.vitamin_a_deficiency", "cause.diarrheal_diseases.incidence_rate")
             - RiskEffect("risk_factor.vitamin_a_deficiency", "cause.lower_respiratory_infections.incidence_rate")
-            - Risk("coverage_gap.lack_of_vitamin_a_supplementation")
+            #- Risk("coverage_gap.lack_of_vitamin_a_supplementation")
             #- RiskEffect("coverage_gap.lack_of_vitamin_a_supplementation", "risk_factor.vitamin_a_deficiency.exposure_parameters")
         metrics:
             - DisabilityObserver()
             - MortalityObserver()
 
-    # Causes an error if left empty. Uncomment when you have components. 
     vivarium_conic_vitamin_a_supp.components:
         - MagicWandSupplementationInterventionStepWise()
         - SupplementedDaysObserver()
         - NeonatalSIS('lower_respiratory_infections')
+        - Risk("risk_factor.vitamin_a_deficiency")
+        - Risk("coverage_gap.lack_of_vitamin_a_supplementation")
+        - RiskEffect("coverage_gap.lack_of_vitamin_a_supplementation", "risk_factor.vitamin_a_deficiency.exposure_parameters")
 
 configuration:
     input_data:

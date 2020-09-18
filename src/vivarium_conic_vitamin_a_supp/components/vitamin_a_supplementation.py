@@ -35,7 +35,7 @@ class MagicWandSupplementationInterventionStepWise:
             baseline_coverage = builder.data.load('population.demographic_dimensions')
             baseline_coverage['parameter'] = 'cat2'
             baseline_coverage['value'] = 1 - builder.configuration.lack_of_vitamin_a_supplementation.exposure
-            
+
             target = self.config.target_coverage
             start_year = self.config.intervention_start_year
             end_year = self.config.intervention_end_year
