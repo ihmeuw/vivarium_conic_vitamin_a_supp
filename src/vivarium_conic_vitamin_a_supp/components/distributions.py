@@ -146,7 +146,7 @@ class PolytomousDistribution:
 
 class DichotomousDistribution:
     def __init__(self, risk: str, exposure_data: pd.DataFrame):
-        self.risk = risk
+        self.risk = risk.name
         self.exposure_data = exposure_data.drop('cat2', axis=1)
 
     @property

@@ -10,7 +10,7 @@ exposure.
 import pandas as pd
 
 from vivarium_public_health.utilities import EntityString
-from vivarium_public_health.risks.distributions import SimulationDistribution
+from .distributions import SimulationDistribution
 from vivarium_public_health.risks.data_transformations import get_exposure_post_processor
 
 
