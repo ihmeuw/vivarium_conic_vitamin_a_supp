@@ -12,7 +12,6 @@ for an example.
 
    No logging is done here. Logging is done in vivarium inputs itself and forwarded.
 """
-from vivarium_gbd_access import gbd
 from gbd_mapping import causes, risk_factors, covariates
 import pandas as pd
 from vivarium.framework.artifact import EntityKey
@@ -20,7 +19,7 @@ from vivarium_inputs import interface, utilities, utility_data, globals as vi_gl
 from vivarium_inputs.mapping_extension import alternative_risk_factors
 from get_draws.api import get_draws
 
-from vivarium_conic_vitamin_a_supp import paths, globals as project_globals
+from vivarium_conic_vitamin_a_supp import globals as project_globals
 
 
 def get_data(lookup_key: str, location: str) -> pd.DataFrame:

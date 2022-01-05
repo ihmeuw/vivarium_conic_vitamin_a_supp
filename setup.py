@@ -17,24 +17,24 @@ if __name__ == "__main__":
         long_description = f.read()
 
     install_requirements = [
-        'vivarium==0.9.3',
-        'vivarium_public_health==0.10.4',
+        'vivarium==0.10.9',
+        'vivarium_public_health==0.10.14',
 
         'click',
-        'gbd_mapping==2.1.0',
+        'gbd_mapping>=3.0.0, <4.0.0',
         'jinja2',
         'loguru',
-        'numpy<=1.15.4',
-        'pandas<0.25',
+        'numpy',
+        'pandas',
         'scipy',
-        'tables<=3.4.0',
+        'tables',
         'pyyaml',
     ]
 
     # use "pip install -e .[dev]" to install required components + extra components
     extras_require = [
-        'vivarium_cluster_tools==1.2.0',
-        'vivarium_inputs[data]==3.1.1',
+        'vivarium_cluster_tools==1.2.9',
+        'vivarium_inputs[data]==4.0.4',
     ]
 
     setup(
