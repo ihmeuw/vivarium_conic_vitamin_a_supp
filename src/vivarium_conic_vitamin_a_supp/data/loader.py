@@ -15,9 +15,8 @@ for an example.
 from gbd_mapping import causes, risk_factors, covariates
 import pandas as pd
 from vivarium.framework.artifact import EntityKey
-from vivarium_inputs import interface, utilities, utility_data, globals as vi_globals
+from vivarium_inputs import interface
 from vivarium_inputs.mapping_extension import alternative_risk_factors
-from get_draws.api import get_draws
 
 from vivarium_conic_vitamin_a_supp import globals as project_globals
 
@@ -61,16 +60,6 @@ def get_data(lookup_key: str, location: str) -> pd.DataFrame:
         project_globals.MEASLES.MEASLES_DISABILITY_WEIGHT: load_standard_data,
         project_globals.MEASLES.MEASLES_RESTRICTIONS: load_metadata,
 
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_PREVALENCE: load_standard_data,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_BIRTH_PREVALENCE: load_lri_birth_prevalence_from_meid,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_INCIDENCE_RATE: load_standard_data,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_REMISSION_RATE: load_standard_data,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_CAUSE_SPECIFIC_MORTALITY_RATE: load_standard_data,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_EXCESS_MORTALITY_RATE: load_standard_data,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_DISABILITY_WEIGHT: load_standard_data,
-        project_globals.LOWER_RESPIRATORY_INFECTIONS.LRI_RESTRICTIONS: load_metadata,
-
-
         project_globals.VITAMIN_A_DEFICIENCY.VITAMIN_A_DEFICIENCY_CATEGORIES: load_metadata,
         project_globals.VITAMIN_A_DEFICIENCY.VITAMIN_A_DEFICIENCY_RESTRICTIONS: load_metadata,
         project_globals.VITAMIN_A_DEFICIENCY.VITAMIN_A_DEFICIENCY_DISABILITY_WEIGHT: load_standard_data,
@@ -111,29 +100,6 @@ def load_metadata(key: str, location: str):
     if hasattr(metadata, 'to_dict'):
         metadata = metadata.to_dict()
     return metadata
-
-
-def load_lri_birth_prevalence_from_meid(_, location):
-    """Ignore the first argument to fit in to the get_data model. """
-    location_id = utility_data.get_location_id(location)
-    data = get_draws('modelable_entity_id', project_globals.LRI_BIRTH_PREVALENCE_MEID,
-                     source=project_globals.LRI_BIRTH_PREVALENCE_DRAW_SOURCE,
-                     age_group_id=project_globals.LRI_BIRTH_PREVALENCE_AGE_ID,
-                     measure_id=vi_globals.MEASURES['Prevalence'],
-                     gbd_round_id=project_globals.LRI_BIRTH_PREVALENCE_GBD_ROUND,
-                     location_id=location_id)
-    data = data[data.measure_id == vi_globals.MEASURES['Prevalence']]
-    data = utilities.normalize(data, fill_value=0)
-
-    idx_columns = list(vi_globals.DEMOGRAPHIC_COLUMNS)
-    idx_columns.remove('age_group_id')
-    data = data.filter(idx_columns + vi_globals.DRAW_COLUMNS)
-
-    data = utilities.reshape(data)
-    data = utilities.scrub_gbd_conventions(data, location)
-    data = utilities.split_interval(data, interval_column='year', split_column_prefix='year')
-    return utilities.sort_hierarchical_data(data)
-
 
 
 # TODO - add project-specific data functions here
