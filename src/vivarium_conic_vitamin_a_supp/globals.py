@@ -35,7 +35,9 @@ class __Population(NamedTuple):
     DEMOGRAPHY: str = 'population.demographic_dimensions'
     TMRLE: str = 'population.theoretical_minimum_risk_life_expectancy'
     ACMR: str = 'cause.all_causes.cause_specific_mortality_rate'
-    COV_LBBS_ESTIMATE: str = 'covariate.live_births_by_sex.estimate'
+    # todo uncomment so that artifact loads this data
+    # COV_LBBS_ESTIMATE: str = 'covariate.live_births_by_sex.estimate'
+    COV_LBBS_ESTIMATE = 'covariate.live_births_by_sex.estimate'
 
     @property
     def name(self):
@@ -86,29 +88,6 @@ class __MEASLES(NamedTuple):
     def log_name(self):
         return self.name.replace('_', ' ')
 
-LRI_BIRTH_PREVALENCE_MEID = 1258
-LRI_BIRTH_PREVALENCE_DRAW_SOURCE = 'epi'
-LRI_BIRTH_PREVALENCE_AGE_ID = 164
-LRI_BIRTH_PREVALENCE_GBD_ROUND = 5
-
-class __LOWER_RESPIRATORY_INFECTIONS(NamedTuple):
-    LRI_CAUSE_SPECIFIC_MORTALITY_RATE: str = 'cause.lower_respiratory_infections.cause_specific_mortality_rate'
-    LRI_BIRTH_PREVALENCE: str = 'cause.lower_respiratory_infections.birth_prevalence'
-    LRI_PREVALENCE: str = 'cause.lower_respiratory_infections.prevalence'
-    LRI_INCIDENCE_RATE: str = 'cause.lower_respiratory_infections.incidence_rate'
-    LRI_REMISSION_RATE: str = 'cause.lower_respiratory_infections.remission_rate'
-    LRI_EXCESS_MORTALITY_RATE: str = 'cause.lower_respiratory_infections.excess_mortality_rate'
-    LRI_DISABILITY_WEIGHT: str = 'cause.lower_respiratory_infections.disability_weight'
-    LRI_RESTRICTIONS: str = 'cause.lower_respiratory_infections.restrictions'
-
-    @property
-    def name(self):
-        return 'lower_respiratory_infections'
-
-    @property
-    def log_name(self):
-        return self.name.replace('_', ' ')
-
 
 class __VITAMIN_A_DEFICIENCY(NamedTuple):
     VITAMIN_A_DEFICIENCY_CATEGORIES: str = 'risk_factor.vitamin_a_deficiency.categories'
@@ -130,7 +109,6 @@ class __VITAMIN_A_DEFICIENCY(NamedTuple):
 
 DIARRHEA = __DIARRHEA()
 MEASLES = __MEASLES()
-LOWER_RESPIRATORY_INFECTIONS = __LOWER_RESPIRATORY_INFECTIONS()
 VITAMIN_A_DEFICIENCY = __VITAMIN_A_DEFICIENCY()
 
 
@@ -138,7 +116,6 @@ MAKE_ARTIFACT_KEY_GROUPS = [
     POPULATION,
     DIARRHEA,
     MEASLES,
-    LOWER_RESPIRATORY_INFECTIONS,
     VITAMIN_A_DEFICIENCY
 ]
 
